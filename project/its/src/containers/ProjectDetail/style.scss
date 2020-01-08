@@ -1,0 +1,40 @@
+.projectDetail {
+  padding: 20px;
+}
+
+.projectDetail_subtitle {
+  margin-bottom: 10px;
+}
+
+.projectDetail_header {
+  margin-bottom: 15px;
+}
+
+.projectDetail_tab {
+  padding: 10px;
+  border: 1px solid gray;
+}
+
+.projectDetail_tab_container {
+  margin-top: 20px;
+}
+
+.memberTab_identity {
+  height: fit-content;
+}
+
+.projectDetail_icon {
+  margin-bottom: 10px;
+  width: 2.3em;
+  border-radius: 50%;
+  border: 1.5px solid black;
+
+  img {
+
+    margin-right: 10px;
+    object-fit: contain;
+    width: 2.3em;
+    border-radius: 50%;
+
+  }
+}

@@ -1,0 +1,56 @@
+.nameSelector {
+    margin: 5px 0;
+}
+.nameselector_serachList,
+.ql-mention-list-container {
+    min-width: 200px;
+    background-color: #e2e8f0;
+    padding-top: 10px 0;
+}
+.nameselector_serachList {
+    transform: translateY(-50%);
+}
+
+.nameselector_serachList_item,
+.ql-mention-list-item {
+    padding: 5px;
+}
+.nameselector_serachList_item:hover,
+.nameselector_serachList_item-select,
+.ql-mention-list-item.selected {
+    background-color: #3492eb;
+}
+.nameselector_close {
+    width: 1em;
+    height: 1em;
+    opacity: 0.3;
+    position: relative;
+}
+.nameselector_close:hover {
+    opacity: 1;
+}
+.nameselector_close:before,
+.nameselector_close:after {
+    position: absolute;
+    left: 0.5em;
+    content: ' ';
+    height: 1em;
+    width: 2px;
+    background-color: #333;
+}
+.nameselector_close:before {
+    transform: rotate(45deg);
+}
+.nameselector_close:after {
+    transform: rotate(-45deg);
+}
+.nameselector_username {
+    border: 1px solid rgb(182, 176, 176);
+    padding: 5px;
+}
+.selected_username_tag {
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+}

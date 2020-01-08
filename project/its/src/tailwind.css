@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+.main_btn {
+  @apply text-16 cursor-pointer inline-block rounded-4 font-medium text-center;
+  line-height: normal;
+  padding: 8.5px 10px;
+}
+
+.btn-active {
+  @apply bg-main text-white;
+}
+
+.btn-active:hover {
+  @apply bg-main-hover;
+}
+
+.btn-active.active,
+.btn-active:active {
+  @apply bg-main-active;
+}
+
+.btn-active.disable {
+  @apply text-main-disable bg-cancel pointer-events-none cursor-default;
+}
+
+.btn-active.disable:hover {
+  @apply bg-cancel;
+}
+
+.btn-cancel {
+  @apply bg-cancel text-333;
+}
+
+.btn-cancel:hover {
+  @apply bg-cancel-hover;
+}
+
+.btn-cancel.active,
+.btn-cancel:active {
+  @apply bg-cancel-active;
+}
+
+.h-fit {
+  height: fit-content;
+}
+
+@tailwind utilities;
+html {
+  font-size: 10px !important;
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  font-family: "Roboto", sans-serif !important;
+}
+
+/* HTML5 display-role reset for older browsers */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}

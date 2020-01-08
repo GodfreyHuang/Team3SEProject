@@ -1,0 +1,83 @@
+.issueActivity_profileIcon {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 2.3em;
+    border-radius: 50%;
+    border: 1.5px solid black;
+
+    img {
+        object-fit: contain;
+        width: 2.3em;
+        border-radius: 50%;
+
+    }
+}
+
+.issueActivity_statusIcon {
+    z-index: 6;
+    width: 2.3em;
+
+    .add_member_icon {
+        background-color: rgb(41, 230, 41);
+        border: 4px solid rgb(41, 230, 41);
+    }
+
+    .open_icon {
+        background-color: #3492eb;
+        border: 4px solid #3492eb;
+    }
+
+    .comment_icon {
+        width: 1.8em;
+        background-color: #FFD700;
+        border: 4px solid #FFD700;
+    }
+
+    .mark_icon {
+        background-color: #FF3D57;
+        border: 4px solid #FF3D57;
+    }
+}
+
+.issueActivity {
+    .front {
+        display: block;
+        position: relative;
+    }
+
+    .behind {
+        display: block;
+        z-index: 3;
+    }
+
+    .issueActivity_hl {
+        border-top: 1px solid #CBD5E0;
+        margin: 0.5em 0;
+
+    }
+
+    .hll {
+
+        border-bottom: 1px solid rgb(159, 167, 175);
+        margin: 1em 0;
+        width: 20px;
+    }
+
+    .vll {
+        left: 18px;
+        border-left: 1px solid rgb(159, 167, 175);
+        height: 70px;
+        position: relative;
+
+    }
+
+}
+
+.invert {
+    filter: invert(100%);
+}
+
+.comment {
+    text-align: left;
+
+}

@@ -1,0 +1,35 @@
+$border_color: #d6d6d6;
+$box_shadow: rgba(0, 0, 0, 0.1);
+$box_shadow-hover: rgba(149, 191, 255, 0.952);
+
+.projectCard {
+    background-color: white;
+    border: solid 1px white;
+    border-bottom: solid 1px $border_color;
+    -webkit-box-shadow: 0px 0px 21px -5px rgba(176, 167, 176, 0.89);
+    -moz-box-shadow: 0px 0px 21px -5px rgba(176, 167, 176, 0.89);
+    box-shadow: 0px 0px 21px -5px rgba(176, 167, 176, 0.89);
+    margin-top: 15px;
+    padding: 20px;
+    border-radius: 10px;
+
+    &:hover {
+        border: solid 1px $border_color;
+        box-shadow: 0 1px 10px 0 $box_shadow-hover;
+        transform: scale(1.03);
+
+        -webkit-transition: transform 0.4s ease-in-out;
+        -moz-transition: transform 0.4s ease-in-out;
+        -ms-transition: transform 0.4s ease-in-out;
+    }
+}
+
+.projectCard_icon {
+    width: 1em;
+    height: 1em;
+    margin-right: 10px;
+}
+
+.projectCard_title {
+    margin-bottom: 15px;
+}

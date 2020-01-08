@@ -1,0 +1,1499 @@
+swagger: "2.0"
+info:
+  description: API for Issue tracking system
+  version: 1.0.0
+  title: ITS - API
+
+# tags are used for organizing operations
+tags:
+  - name: session
+    description: API for auth (client)
+  - name: profile
+    description: API for profile data (client)
+  - name: project
+    description: API for project data (client)
+  - name: issue
+    description: API for update media (client)
+  - name: media
+    description: API for update media (client)
+
+paths:
+  /session:
+    post:
+      tags:
+        - session
+      summary: Register a new account
+      operationId: register
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Email, password and username
+          schema:
+            type: object
+            required:
+              - email
+              - password
+              - username
+            properties:
+              email:
+                type: string
+                format: email
+                example: test@gmail.com
+              password:
+                type: string
+                format: hash
+                example: 127e6fbfe24a750e72930c220a8e138275656b8e5d8f48a98c3c92df2caba935
+              username:
+                type: string
+                example: ting
+      responses:
+        200:
+          description: Register success
+          schema:
+            $ref: "#/definitions/AUTH_RES"
+        400:
+          description: Invalid parameter
+        401:
+          description: Login fail. Wrong password.
+        409:
+          description: Email or username exist
+            with error code (emai 0 or username 1)
+          schema:
+            type: integer
+        500:
+          description: Internal Server Error
+  /session/login:
+    post:
+      tags:
+        - session
+      summary: Login by email and password
+      operationId: login
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Email and password
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+                format: email
+                example: test@gmail.com
+              password:
+                type: string
+                format: hash
+                example: 127e6fbfe24a750e72930c220a8e138275656b8e5d8f48a98c3c92df2caba935
+      responses:
+        200:
+          description: Login success
+          schema:
+            $ref: "#/definitions/AUTH_RES"
+        400:
+          description: Invalid parameter
+        401:
+          description: Login fail. Wrong password.
+        404:
+          description: Email not exist
+        500:
+          description: Internal Server Error
+  /session/logout:
+    delete:
+      tags:
+        - session
+      summary: Logout
+      operationId: logout
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+      responses:
+        500:
+          description: Internal Server Error
+  /session/verify/email:
+    get:
+      tags:
+        - session
+      summary: Check Email exist
+      operationId: checkEmailExist
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: email
+          required: true
+      responses:
+        200:
+          description: Email exist
+        400:
+          description: Invalid parameter
+        404:
+          description: Email not exist
+        500:
+          description: Internal Server Error
+  /session/verify/username:
+    get:
+      tags:
+        - session
+      summary: Check username exist
+      operationId: checkUsernameExist
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: username
+          required: true
+      responses:
+        200:
+          description: username exist
+        400:
+          description: Invalid parameter
+        404:
+          description: username not exist
+        500:
+          description: Internal Server Error
+  /session/verify:
+    get:
+      tags:
+        - session
+      summary: Do email verify
+      operationId: doEmailVerify
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: key
+          required: true
+        - in: query
+          type: integer
+          name: id
+          required: true
+      responses:
+        200:
+          description: Login success
+          schema:
+            $ref: "#/definitions/AUTH_RES"
+        400:
+          description: Invalid parameter
+        404:
+          description: key or user id not exist
+        500:
+          description: Internal Server Error
+  /send:
+    get:
+      tags:
+        - session
+      summary: send verify email agaim
+      operationId: sendVerifyEmail
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: email
+          required: true
+      responses:
+        200:
+          description: success
+        400:
+          description: Invalid parameter
+        404:
+          description: email not found
+        500:
+          description: Internal Server Error
+  /profile:
+    get:
+      tags:
+        - profile
+      summary: get profile by id
+      operationId: profileById
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: integer
+          name: profileId
+          required: true
+      responses:
+        200:
+          description: fetch profile success
+          schema:
+            $ref: "#/definitions/PROFILE_RES"
+        400:
+          description: Invalid parameter
+        404:
+          description: Profile not found
+        500:
+          description: Internal Server Error
+  /profile/me:
+    get:
+      tags:
+        - profile
+      summary: get my username
+      operationId: profileMe
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: query
+          type: integer
+          name: profileId
+          required: true
+      responses:
+        200:
+          description: fetch profile success
+          schema:
+            $ref: "#/definitions/PROFILE_RES2"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+  /profile/update:
+    put:
+      tags:
+        - profile
+      summary: update my profile
+      operationId: profileUpdate
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/UpdateUserReq"
+      responses:
+        200:
+          description: fetch profile success
+          schema:
+            $ref: "#/definitions/PROFILE_RES2"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+  /profile/checkpassword:
+    post:
+      tags:
+        - profile
+      summary: check password correct
+      operationId: checkPassword
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: password
+          schema:
+            type: object
+            required:
+              - password
+            properties:
+              password:
+                type: string
+                format: hash
+                example: 127e6fbfe24a750e72930c220a8e138275656b8e5d8f48a98c3c92df2caba935
+      responses:
+        200:
+          description: password correct
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        406:
+          description: password not correct
+        500:
+          description: Internal Server Error
+  /profile/username:
+    get:
+      tags:
+        - profile
+      summary: get like username
+      operationId: searchLikeUsername
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: query
+          type: string
+          name: username
+          required: true
+      responses:
+        200:
+          description: search username success
+          schema:
+            type: array
+            items: 
+              type: string
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+  /media/image:
+    post:
+      tags:
+        - media
+      summary: Upload image and return url
+      operationId: mediaImage
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            type: object
+            properties:
+              file:
+                type: object
+      responses:
+        200:
+          description: upload success
+          schema: 
+             type: string
+             format: string
+             example: "www.test.imagepath.jpg"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+  /project:
+    post:
+      tags:
+        - project
+      summary: create new project
+      operationId: newProject
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/PROJECT_REQ"
+      responses:
+        200:
+          description: new project success
+          schema:
+            $ref: "#/definitions/PROJECT_RES"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        409:
+          description: repeated project name 
+        500:
+          description: Internal Server Error
+    put:
+      tags:
+        - project
+      summary: edit project detail
+      operationId: editProject
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/EditProjectReq"
+      responses:
+        200:
+          description: fetch profile success
+          schema:
+            $ref: "#/definitions/PROJECT_RES"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        409:
+          description: repeated project name 
+        500:
+          description: Internal Server Error
+  /project/get:
+    post:
+      tags:
+        - project
+      summary: fetch project
+      operationId: fetchProject
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/GetProjectReq"
+      responses:
+        200:
+          description: fetch project success
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/PROJECT_RES"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+  /project/detail:
+    post:
+      tags:
+        - project
+      summary: fetch project detail
+      operationId: fetchProjectDetail
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/ProjectDetailReq"
+      responses:
+        200:
+          description: fetch detail success
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/ProjectDetailRes"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        404:
+          description: not found / permission denied
+        500:
+          description: Internal Server Error
+  /project/tags:
+    post:
+      tags:
+        - project
+      summary: fetch project tags
+      operationId: fetchProjectTags
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body 
+          name: ProjectId
+          schema:
+            type: object
+            required:
+              - projectId
+            properties:
+              projectId:
+                type: integer
+                example: 1
+      responses:
+        200:
+          description: fetch tags success
+          schema:
+            type: array
+            items: 
+              type : string
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        404:
+          description: not found / permission denied
+        500:
+          description: Internal Server Error
+  /project/member:
+    post:
+      tags:
+        - project
+      summary: add project member
+      operationId: addProjectMember
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/ProjectMemberReq"
+      responses:
+        200:
+          description: fetch profile success
+          schema:
+            $ref: "#/definitions/ProjectMemberRes"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        403:
+          description: permission denied
+        404:
+          description: user not found 
+        409:
+          description: user already is a project member 
+        500:
+          description: Internal Server Error
+    delete:
+      tags:
+        - project
+      summary: remove project member
+      operationId: removeProjectMember
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/DeleteProjectMemberReq"
+      responses:
+        200:
+          description: remove success
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        403:
+          description: permission denied
+        404:
+          description: user not found 
+        500:
+          description: Internal Server Error
+    put:
+      tags:
+        - project
+      summary: edit project member
+      operationId: editProjectMember
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/UpdateProjectMemberReq"
+      responses:
+        200:
+          description: update success
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        403:
+          description: permission denied
+        404:
+          description: user not found 
+        500:
+          description: Internal Server Error
+  /project/getMember:
+    post:
+      tags:
+        - project
+      summary: get project member by project id
+      operationId: getProjectMember
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/GetProjectIssueReq"
+      responses:
+        200:
+          description: fetch member success
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/ProjectMemberRes"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        403:
+          description: permission denied
+        500:
+          description: Internal Server Error
+  /project/report:
+    get:
+      tags:
+        - project
+      summary: get project repoty
+      operationId: getProjectReport
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: query
+          type: integer
+          name: projectId
+          required: true
+        - in: query
+          type: integer
+          name: day
+          required: true
+        - in: query
+          type: integer
+          name: priority
+          required: true
+        - in: query
+          type: boolean
+          name: closed
+          required: true
+      responses:
+        200:
+          description: fetch report success
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/ProjectReportRes"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        403:
+          description: permission denied
+        500:
+          description: Internal Server Error
+  /issue:
+    post:
+      tags:
+        - issue
+      summary: New issue
+      operationId: newIssue
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/NewIssueReq"
+      responses:
+        200:
+          description: fetch profile success
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/NewIssueRes"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+    put:
+      tags:
+        - issue
+      summary: Edit issue
+      operationId: editIssue
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/EditIssueReq"
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/NewIssueRes"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+  /issue/project:
+    post:
+      tags:
+        - issue
+      summary: Get issue by project Id
+      operationId: projectIssue
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/GetProjectIssueReq"
+      responses:
+        200:
+          description: fetch profile success
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/NewIssueRes"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+  /issue/get:
+    get:
+      tags:
+        - issue
+      summary: fetch issue by issueId
+      operationId: getIssueById
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: query
+          type: string
+          name: issueId
+          required: true
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/IssueDetailRes"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+    post:
+      tags:
+        - issue
+      summary: fetch issue list
+      operationId: getUserIssue
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/GetProjectReq"
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/NewIssueRes"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+  /issue/activity:
+    post:
+      tags:
+        - issue
+      summary: new issue activity
+      operationId: newIssueActivity
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/NewActivityReq"
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/IssueDetailRes"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+    put:
+      tags:
+        - issue
+      summary: edit issue activity
+      operationId: editIssueActivity
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: sessionId
+          required: true
+        - in: body
+          name: FormData
+          schema:
+            $ref: "#/definitions/EditActivityReq"
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/IssueDetailRes"
+        400:
+          description: Invalid parameter
+        401:
+          description: sessionId unauthorized
+        500:
+          description: Internal Server Error
+    
+  
+definitions:
+  AUTH_RES:
+    type: object
+    required:
+      - userId
+      - username
+      - sessionID
+    properties:
+      userId:
+        type: integer
+        format: integer
+        example: 1
+      username:
+        type: string
+        example: ting
+      sessionID:
+        type: string
+        format: hash
+        example: 82a9dda829eb7f8ffe9fbe49e45d47d2dad9664fbb7adf72492e3c81ebd3e29134d9bc12212bf83c6840f10e8246b9db54a4859b7ccd0123d86e5872c1e5082f
+  PROFILE_RES:
+    type: object
+    required:
+      - username
+    properties:
+      username:
+        type: string
+        example: ting
+  PROFILE_RES2:
+    type: object
+    required:
+      - username
+      - photoUrl
+      - lineId
+      - isRevice
+    properties:
+      username:
+        type: string
+        example: ting
+      photoUrl:
+        type: string
+        example: www.image.jpg
+      lineId:
+        type: string
+        example: ewuhrriudhgisnrhgiueni
+      isRevice:
+        type: boolean
+        example: true
+  PROJECT_REQ:
+    type: object
+    required:
+      - name
+      - isPrivate
+    properties:
+      name:
+        type: string
+        example: ting's project
+      description:
+        type: string
+        example: hello world
+      isPrivate:
+        type: boolean
+        example: true
+  EditProjectReq:
+    type: object
+    required:
+      - name
+      - isPrivate
+      - id
+      - lineId
+    properties:
+      name:
+        type: string
+        example: ting's project
+      description:
+        type: string
+        example: hello world
+      isPrivate:
+        type: boolean
+        example: true
+      id:
+       type: integer
+      lineId:
+       type: string
+  GetProjectReq:
+    type: object
+    required:
+      - user_id      
+      - timestamp
+      - limit
+      - isOwner
+    properties:
+      user_id:
+        type: integer
+        example: 15
+      timestamp:
+        type: string
+        example: 2019-12-05T06:40:43.746+0000
+      limit:
+        type: integer
+        example: 15
+      isOwner:
+        type: boolean
+        example: true
+  PROJECT_RES:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: ting's project
+      description:
+        type: string
+        example: hello world
+      isPrivate:
+        type: boolean
+        example: true
+      create_time:
+        type: string
+        example: 2019-12-05T06:40:43.746+0000
+      owner:
+        type: string
+        example: ting
+  ProjectDetailReq:
+    type: object
+    required:
+      - user      
+      - project
+    properties:
+      user:
+        type: string
+        example: test
+      project:
+        type: string
+        example: test
+  ProjectDetailRes:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: ting's project
+      description:
+        type: string
+        example: hello world
+      lineId:
+        type: string
+        example: ajsihdjsfisdi
+      isPrivate:
+        type: boolean
+        example: true
+      create_time:
+        type: string
+        example: 2019-12-05T06:40:43.746+0000
+      owner:
+        type: string
+        example: ting
+      ownerAvatarUrl:
+        type: string
+        example: asdkjahwiuhqihweiqiew
+      identity:
+        type: integer
+      issue_count:
+        type: integer
+      finish_issue_count:
+        type: integer
+        example: 1
+      member_count:
+        type: integer
+        example: 1
+      tag_count:
+        type: integer
+        example: 1
+      tags:
+        type: array
+        items: 
+          type: string
+  NewIssueReq:
+    type: object
+    properties:
+      name:
+        type: string
+        example: new issue
+      description:
+        type: string
+        example: hello world
+      projectId:
+        type: integer
+        example: 1
+      state:
+        type: integer
+        example: 1
+      severity:
+        type: integer
+        example: 1
+      priority:
+        type: integer
+        example: 1
+      isReproducible:
+        type: boolean
+        example: true
+      tags:
+        type: array
+        items:
+          type: string
+  EditIssueReq:
+    type: object
+    properties:
+      name:
+        type: string
+        example: new issue
+      description:
+        type: string
+        example: hello world
+      issueId:
+        type: integer
+        example: 1
+      tags:
+        type: array
+        items:
+          type: string
+      mentionList:
+        type: array
+        items:
+          type: string
+  NewIssueRes:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: new issue
+      description:
+        type: string
+        example: hello world
+      projectId:
+        type: integer
+        example: 1
+      projectName:
+        type: string
+        example: yo
+      projectOwner:
+        type: string
+        example: Ting
+      state:
+        type: integer
+        example: 1
+      severity:
+        type: integer
+        example: 1
+      priority:
+        type: integer
+        example: 1
+      isReproducible:
+        type: boolean
+        example: true 
+      create_time:
+        type: string
+        example: 2019-12-05T06:40:43.746+0000
+      reportUser:
+        type: string
+        example: test
+      reportUserAvatar:
+        type: string
+        example: www.dsiufhisuhdfisu.jpg
+      tags:
+        type: array
+        items:
+          type: string
+      assignList:
+        type: array
+        items:
+          type: string
+  IssueDetailRes:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: new issue
+      description:
+        type: string
+        example: hello world
+      projectId:
+        type: integer
+        example: 1
+      projectName:
+        type: string
+        example: yo
+      projectOwner:
+        type: string
+        example: Ting
+      state:
+        type: integer
+        example: 1
+      severity:
+        type: integer
+        example: 1
+      priority:
+        type: integer
+        example: 1
+      isReproducible:
+        type: boolean
+        example: true 
+      create_time:
+        type: string
+        example: 2019-12-05T06:40:43.746+0000
+      reportUser:
+        type: string
+        example: test
+      reportUserAvatar:
+        type: string
+        example: www.dsiufhisuhdfisu.jpg
+      tags:
+        type: array
+        items:
+          type: string
+      projectIdentity:
+        type: integer
+        example: 1
+      assignList:
+        type: array
+        items:
+          type: string
+      mentionList:
+        type: array
+        items:
+          type: string
+      activity:
+        type: array
+        items:
+          $ref: "#/definitions/IssueActivityRes"
+          
+  GetProjectIssueReq:
+    type: object
+    properties:
+      projectId:
+        type: integer
+        example: 2
+      timestamp:
+        type: string
+        example: 2019-12-05T06:40:43.746+0000
+      limit:
+        type: integer
+        example: 15
+  ProjectMemberReq:
+    type: object
+    required:
+      - projectId      
+      - username
+      - identity
+    properties:
+      projectId:
+        type: integer
+        example: 1
+      username:
+        type: string
+        example: test
+      identity:
+        type: integer
+        example: 1
+        minimum: 1
+  ProjectMemberRes:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 2
+      username:
+        type: string
+        example: test
+      join_time:
+        type: string
+        example: 2019-12-05T06:40:43.746+0000
+      identity:
+        type: integer
+        example: 1
+      avatarUrl:
+        type: string
+        example: dawbjkdnawkjndkaw
+  UpdateUserReq:
+    type: object
+    properties:
+      avatarUrl:
+        type: string
+        example: dfgdfgsdfew
+      lineId:
+        type: string
+        example: test
+      username:
+        type: string
+        example: asd
+      isRevice:
+        type: boolean
+        example: true
+      password:
+        type: string
+  DeleteProjectMemberReq:
+    type: object
+    properties:
+      projectId:
+        type: integer
+        example: 1
+      userId:
+        type: integer
+        example: 2
+  UpdateProjectMemberReq:
+    type: object
+    properties:
+      projectId:
+        type: integer
+        example: 1
+      userId:
+        type: integer
+        example: 2
+      identity:
+        type: integer
+        example: 2
+  ProjectReportRes:
+    type: object
+    properties:
+      count:
+        type: array
+        items:
+          type: integer
+      day:
+        type: array
+        items:
+          type: integer
+  IssueActivityRes:
+    type: object
+    properties:
+      id:
+        type: integer
+      type:
+        type: integer
+      issueId:
+        type: integer
+      userId:
+        type: integer
+      create_time:
+        type: string
+      prevState:
+        type: integer
+      nextState:
+        type: integer
+      username:
+        type: string
+      content:
+        type: string
+      avatarUrl:
+        type: string
+      assignList:
+        type: array
+        items:
+          type: string
+  NewActivityReq:
+    type: object
+    properties:
+      issueId:
+        type: integer
+      state:
+        type: integer
+      severity:
+        type: integer
+      priority:
+        type: integer
+      isReproducible:
+        type: boolean
+      content:
+        type: string
+      mentionList:
+        type: array
+        items:
+          type: string
+      assignList:
+        type: array
+        items:
+          type: string
+  EditActivityReq:
+    type: object
+    properties:
+      activityId:
+        type: integer
+      issueId:
+        type: integer
+      name:
+        type: string
+      comment:
+        type: string
+      mentionList:
+        type: array
+        items:
+          type: string
+  
+  
+      
+
+  
+    
+
+  
+      
+  
+        

@@ -1,0 +1,37 @@
+.tagInput_tag {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.tagInput_input {
+    margin: 5px 0;
+    padding: 5px;
+    border: 1px solid rgb(182, 176, 176);
+}
+
+.tagInput_close {
+    width: 1em;
+    height: 1em;
+    opacity: 0.3;
+    position: relative;
+}
+.tagInput_close:hover {
+    opacity: 1;
+}
+.tagInput_close:before,
+.tagInput_close:after {
+    position: absolute;
+    left: 0.5em;
+    content: ' ';
+    height: 1em;
+    width: 2px;
+    background-color: #333;
+}
+.tagInput_close:before {
+    transform: rotate(45deg);
+}
+.tagInput_close:after {
+    transform: rotate(-45deg);
+}

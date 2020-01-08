@@ -1,0 +1,41 @@
+.setting_editIcon {
+  width: 1em;
+}
+
+.setting {
+  padding: 20px;
+}
+
+
+.setting_avatar_container {
+  max-width: 200px;
+}
+
+.setting_avatar {
+  padding-bottom: 100%;
+  border-radius: 50%;
+  border: 1.5px solid black;
+
+  img {
+    border-radius: 50%;
+  }
+}
+
+.hl {
+  border-top: 1px solid #CBD5E0;
+  margin: 1em 0;
+}
+
+.vl {
+  border-left: 1px solid #cbd5e0;
+  height: auto;
+}
+
+.upload-wrap {
+  position: relative;
+}
+
+.upload-btn {
+  left: 0;
+  opacity: 0;
+}

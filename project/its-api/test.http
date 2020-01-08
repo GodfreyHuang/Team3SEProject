@@ -1,0 +1,20 @@
+POST http://localhost:8080/session HTTP/1.1
+content-type: application/json
+
+{
+    "email": "test1@mail.com",
+    "username": "test1",
+    "password":"123123123"
+}
+
+###
+PUT http://localhost:8080/session/user?issueId=1&sessionId=AD5C33798E7733907AB5B7E194C181F3
+content-type: application/json
+
+{
+    "username": "test444",
+    "password":"",
+    "avatarUrl":null,
+    "isRevice":null,
+    "lineId":null
+}

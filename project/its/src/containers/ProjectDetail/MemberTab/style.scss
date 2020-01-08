@@ -1,0 +1,36 @@
+.memberCard {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 10em;
+    margin-right: 2rem;
+    padding: 2rem;
+}
+.memberCard_avatar {
+    width: 5em;
+    height: 5em;
+    border-radius: 50%;
+    border: 1.5px solid black;
+    margin: auto;
+
+    img {
+        border-radius: 50%;
+    }
+}
+.memberCard_btn_container {
+    img {
+        object-fit: contain;
+        width: 1em;
+        cursor: pointer;
+        margin-left: 0.5em;
+    }
+}
+.memberCard_identity {
+    border: 1px solid black;
+}
+.memberTab_identity {
+    border: 1px solid black;
+}
+.MemberTab_add_container_border {
+    border: 1px solid black;
+    max-width: 500px;
+}
