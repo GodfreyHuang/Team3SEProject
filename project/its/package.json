@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://TingNgs.github.io/its",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "chalk": "2.4.2",
     "chart.js": "^2.9.3",
     "node-sass": "^4.12.0",
